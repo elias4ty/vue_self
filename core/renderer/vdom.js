@@ -1,3 +1,4 @@
+import { VNodeType } from "./config";
 export default class VNode{
   constructor({
     type,
@@ -10,9 +11,14 @@ export default class VNode{
   }
 }
 
+const t = new VNode({
+  type: VNodeType.TEXT,
+  children: '哈哈哈'
+});
+
 const p = new VNode({
   type: 'p',
-  children: 'i am a p',
+  children: t,
   props: {
     class: 'aaa',
     onClick: [
@@ -35,10 +41,7 @@ const vnode = new VNode({
     id: 'foo',
     class: 'bar'
   },
-  children: [
-    'hello',
-    p
-  ]
+  children: [t, p]
 });
 
 export {

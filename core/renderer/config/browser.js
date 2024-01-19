@@ -1,3 +1,5 @@
+import { VNodeType } from ".";
+
 // 浏览器平台下的操作函数
 const browser = {
   createElement(tag) {
@@ -57,9 +59,16 @@ const browser = {
     }
   },
   unmount(vnode) {
-    const { el } = vnode;
-    const parent = el.parentNode;
-    parent && parent.removeChild(el);
+    if (vnode.type === VNodeType.FRAGMENT) {
+      vnode.children.forEach(c => this.unmount(c));
+    } else {
+      const { el } = vnode;
+      const parent = el.parentNode;
+      parent && parent.removeChild(el);
+    }
+  },
+  createTextNode(text) {
+    return document.createTextNode(text);
   }
 }
 
