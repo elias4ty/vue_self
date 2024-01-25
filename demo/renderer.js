@@ -1,5 +1,5 @@
 import createRenderder from '@core/renderer';
-import { vnode } from '@core/renderer/vdom';
+import { vnode } from './vdom';
 import browser from '@core/renderer/config/browser';
 
 const renderer = createRenderder(browser);

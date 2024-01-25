@@ -4,6 +4,7 @@
  */
 import VNode from "./vdom";
 import { VNodeType } from "./config";
+import Component from "../component";
 
 /**
  * 根据配置选择平台渲染器
@@ -71,7 +72,16 @@ function createRenderder(options) {
       } else {
         patchChildren(n1.children, n2.children, container);
       }
-    } else {
+    }
+    // 组件节点
+    else if (type instanceof Component) {
+      if (!n1) {
+        mountElement(n2, container);
+      } else {
+        patchElement(n1, n2, container);
+      }
+    }
+    else {
       console.error('[patch] vnode is invalid');
     }
   }
@@ -143,6 +153,17 @@ function createRenderder(options) {
   // 挂载节点
   function mountElement(vnode, container) {
     const { type, children, props } = vnode;
+
+    // 组件节点
+    if (type instanceof Component) {
+      const comVdom = type.render();
+
+      patch(null, comVdom, container);
+
+      return true;
+    }
+
+    // 元素节点
     const el = createElement(type);
 
     // 处理元素的属性
